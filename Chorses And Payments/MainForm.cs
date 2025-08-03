@@ -6,18 +6,20 @@ namespace ToDos
     public partial class MainForm : Form
     {
         PersonForm personForm = new PersonForm();
-        TaskForm taskForm = new TaskForm();
-        TabPage tppersons = new TabPage("اشخاص");
-        TabPage tptask = new TabPage("کارها");
+        ToDoForm toDoForm = new ToDoForm();
+        //TaskForm taskForm = new TaskForm();
+        TabPage tpPersons = new TabPage("اشخاص");
+        //TabPage tptask = new TabPage("کارها");
+        TabPage tpToDo = new TabPage("کارها");
         public MainForm()
         {
             InitializeComponent();
             //LoadFormsInTabControl("اشخاص", "persons", personForm);
             //LoadFormsInTabControl("کارها", "tasks", taskForm);
-            tppersons.Name = "Persons";
-            tptask.Name = "task";
-            LoadFormsInTabControl(tppersons, personForm);
-            LoadFormsInTabControl(tptask, taskForm);
+            tpPersons.Name = "Persons";
+            tpToDo.Name = "task";
+            LoadFormsInTabControl(tpPersons, personForm);
+            LoadFormsInTabControl(tpToDo, toDoForm);
         }
 
         private void LoadFormsInTabControl(TabPage tp, Form form)
@@ -45,11 +47,11 @@ namespace ToDos
             var selectedTab = tcMain.SelectedIndex;
             if (selectedTab == 0)
             {
-                LoadFormsInTabControl(tppersons, personForm);
+                LoadFormsInTabControl(tpPersons, personForm);
             }
             else
             {
-                LoadFormsInTabControl(tptask, taskForm);
+                LoadFormsInTabControl(tpToDo, toDoForm);
             }
         }
     }

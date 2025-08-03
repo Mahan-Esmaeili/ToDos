@@ -59,6 +59,12 @@
     <Compile Include="AppDbContext.cs" />
     <Compile Include="Domains\Person.cs" />
     <Compile Include="Domains\ToDo.cs" />
+    <Compile Include="ToDoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToDoForm.Designer.cs">
+      <DependentUpon>ToDoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\202505041252098_InitialDb.cs" />
     <Compile Include="Migrations\202505041252098_InitialDb.designer.cs">
       <DependentUpon>202505041252098_InitialDb.cs</DependentUpon>
@@ -106,6 +112,9 @@
     <EmbeddedResource Include="TaskForm.resx">
       <DependentUpon>TaskForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ToDoForm.resx">
+      <DependentUpon>ToDoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -123,6 +132,9 @@
   <ItemGroup>
     <Content Include="Images\delete.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\edit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
