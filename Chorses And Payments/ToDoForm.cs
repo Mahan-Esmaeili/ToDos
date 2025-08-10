@@ -1,7 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ToDos.Domains;
 
 namespace ToDos
 {
@@ -11,6 +13,7 @@ namespace ToDos
         {
             InitializeComponent();
             ConfigureDataGridView();
+            LoadPerson();
             LoadData();
         }
 
@@ -85,6 +88,48 @@ namespace ToDos
             using (AppDbContext appDbContext = new AppDbContext())
             {
                 dgvToDo.DataSource = appDbContext.Tasks.ToList();
+            }
+        }
+
+        private void LoadPerson()
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                ddlPerson.DataSource = appDbContext.People.Select(p => new { p.Id, p.Name }).ToList();
+                ddlPerson.DisplayMember = "Name";
+                ddlPerson.ValueMember = "Id";
+            }
+        }
+
+        private void btnSave_Click(object sender, System.EventArgs e)
+        {
+            string title = txtTitle.Text.Trim();
+            bool status = rdbDone.Checked;
+            string price = txtPrize.Text.Trim();
+
+            if (title.Length == 0 || price.Length == 0)
+            {
+                lblError.Text = "لطفا تمامی فیلد ها را پر کنید";
+                return;
+            }
+
+            else
+            {
+                int prize = Convert.ToInt32(price);
+                int personId = Convert.ToInt32(ddlPerson.SelectedValue.ToString()); 
+                ToDo toDo = new ToDo()
+                {
+                    Title = title,
+                    TaskStatus = status ? TaskStatus.Completed : TaskStatus.NotCompleted,
+                    Payment = prize,
+                    ApplicationDate = DateTime.Now
+
+                };
+
+                using(AppDbContext appDbContext = new AppDbContext())
+                {
+                    appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
+                }
             }
         }
     }

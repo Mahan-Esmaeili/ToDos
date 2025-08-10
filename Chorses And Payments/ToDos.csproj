@@ -59,6 +59,7 @@
     <Compile Include="AppDbContext.cs" />
     <Compile Include="Domains\Person.cs" />
     <Compile Include="Domains\ToDo.cs" />
+    <Compile Include="KeyValuePair.cs" />
     <Compile Include="ToDoForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -40,6 +40,8 @@ namespace ToDos
             this.rdbNotDone = new System.Windows.Forms.RadioButton();
             this.rdbDone = new System.Windows.Forms.RadioButton();
             this.gpbStatus = new System.Windows.Forms.GroupBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.lblError = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvToDo)).BeginInit();
             this.gpbStatus.SuspendLayout();
             this.SuspendLayout();
@@ -47,9 +49,9 @@ namespace ToDos
             // dgvToDo
             // 
             this.dgvToDo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvToDo.Location = new System.Drawing.Point(5, 12);
+            this.dgvToDo.Location = new System.Drawing.Point(5, 3);
             this.dgvToDo.Name = "dgvToDo";
-            this.dgvToDo.Size = new System.Drawing.Size(1328, 279);
+            this.dgvToDo.Size = new System.Drawing.Size(1328, 343);
             this.dgvToDo.TabIndex = 0;
             // 
             // txtPrize
@@ -113,6 +115,7 @@ namespace ToDos
             // rdbNotDone
             // 
             this.rdbNotDone.AutoSize = true;
+            this.rdbNotDone.Checked = true;
             this.rdbNotDone.Location = new System.Drawing.Point(6, 52);
             this.rdbNotDone.Name = "rdbNotDone";
             this.rdbNotDone.Size = new System.Drawing.Size(79, 17);
@@ -128,7 +131,6 @@ namespace ToDos
             this.rdbDone.Name = "rdbDone";
             this.rdbDone.Size = new System.Drawing.Size(74, 17);
             this.rdbDone.TabIndex = 11;
-            this.rdbDone.TabStop = true;
             this.rdbDone.Text = "تمام شده";
             this.rdbDone.UseVisualStyleBackColor = true;
             // 
@@ -136,17 +138,37 @@ namespace ToDos
             // 
             this.gpbStatus.Controls.Add(this.rdbDone);
             this.gpbStatus.Controls.Add(this.rdbNotDone);
-            this.gpbStatus.Location = new System.Drawing.Point(236, 448);
+            this.gpbStatus.Location = new System.Drawing.Point(236, 441);
             this.gpbStatus.Name = "gpbStatus";
-            this.gpbStatus.Size = new System.Drawing.Size(200, 75);
+            this.gpbStatus.Size = new System.Drawing.Size(116, 82);
             this.gpbStatus.TabIndex = 12;
             this.gpbStatus.TabStop = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(426, 555);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 13;
+            this.btnSave.Text = "ذخیره";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.Location = new System.Drawing.Point(423, 422);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(0, 13);
+            this.lblError.TabIndex = 14;
             // 
             // ToDoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1566, 701);
+            this.Controls.Add(this.lblError);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.gpbStatus);
             this.Controls.Add(this.ddlPerson);
             this.Controls.Add(this.lblPrize);
@@ -158,7 +180,7 @@ namespace ToDos
             this.Controls.Add(this.dgvToDo);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ToDoForm";
-            this.Text = "Form1";
+            this.Text = "کارها";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dgvToDo)).EndInit();
             this.gpbStatus.ResumeLayout(false);
@@ -181,5 +203,7 @@ namespace ToDos
         private System.Windows.Forms.RadioButton rdbNotDone;
         private System.Windows.Forms.RadioButton rdbDone;
         private System.Windows.Forms.GroupBox gpbStatus;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Label lblError;
     }
 }

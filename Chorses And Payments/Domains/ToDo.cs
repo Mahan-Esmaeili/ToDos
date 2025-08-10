@@ -18,9 +18,7 @@ namespace ToDos.Domains
 
     public enum TaskStatus 
     {
-        NotStarted,
-        Started,
-        Completed
-        
+        Completed,
+        NotCompleted
     }
 }
