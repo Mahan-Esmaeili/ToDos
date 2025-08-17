@@ -32,12 +32,14 @@ namespace ToDos
                 DataPropertyName = "Id",
                 HeaderText = "شناسه",
                 ReadOnly = true,
-                Width = 50
+                Width = 50,
+                Name = "Id"
             });
 
             dgvToDo.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Title",
+                ReadOnly = true,
                 HeaderText = "عنوان",
                 Width = 200
             });
@@ -54,6 +56,7 @@ namespace ToDos
             dgvToDo.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "TaskStatus",
+                ReadOnly = true,
                 HeaderText = "وضعیت تسک",
                 Width = 200
             });
@@ -64,7 +67,8 @@ namespace ToDos
                 Image = Image.FromFile(Path.Combine(Application.StartupPath, "Images", "delete.png")),
                 ImageLayout = DataGridViewImageCellLayout.Zoom,
                 Width = 60,
-                ToolTipText = "حذف"
+                ToolTipText = "حذف",
+                Name = "Delete"
             });
 
             // Add edit button column
@@ -73,7 +77,8 @@ namespace ToDos
                 Image = Image.FromFile(Path.Combine(Application.StartupPath, "Images", "edit.png")),
                 ImageLayout = DataGridViewImageCellLayout.Zoom,
                 Width = 60,
-                ToolTipText = "ویرایش"
+                ToolTipText = "ویرایش",
+                Name = "Edit"
             });
 
             // Handle events
@@ -116,7 +121,7 @@ namespace ToDos
             else
             {
                 int prize = Convert.ToInt32(price);
-                int personId = Convert.ToInt32(ddlPerson.SelectedValue.ToString()); 
+                int personId = Convert.ToInt32(ddlPerson.SelectedValue.ToString());
                 ToDo toDo = new ToDo()
                 {
                     Title = title,
@@ -126,9 +131,46 @@ namespace ToDos
 
                 };
 
-                using(AppDbContext appDbContext = new AppDbContext())
+                using (AppDbContext appDbContext = new AppDbContext())
                 {
-                    appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
+                    Person person = appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
+                    toDo.Person = person;
+
+                    appDbContext.Tasks.Add(toDo);
+                    appDbContext.SaveChanges();
+                    lblError.Text = "با موفقیت انجام شد";
+                    LoadData();
+                }
+
+            }
+        }
+
+        private void dgvToDo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            using (AppDbContext appDbContext = new AppDbContext())
+            {
+                if (dgvToDo.Columns[e.ColumnIndex].Name == "Delete")
+                {
+                    DialogResult permission = MessageBox.Show(
+                    "آیا از انجام این کار اطمینان دارید؟",
+                     "تایید حذف",
+                     MessageBoxButtons.YesNo,
+                     MessageBoxIcon.Warning
+                );
+
+                    if (permission == DialogResult.Yes)
+                    {
+                        int taskId = Convert.ToInt32(dgvToDo.Rows[e.RowIndex].Cells["Id"].Value.ToString());
+                        ToDo toDo = appDbContext.Tasks.FirstOrDefault(p => p.Id == taskId);
+                        appDbContext.Tasks.Remove(toDo);
+                        appDbContext.SaveChanges();
+                        LoadData();
+                    }
+                }
+
+                else
+                {
+
                 }
             }
         }

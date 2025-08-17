@@ -53,6 +53,7 @@ namespace ToDos
             this.dgvToDo.Name = "dgvToDo";
             this.dgvToDo.Size = new System.Drawing.Size(1328, 343);
             this.dgvToDo.TabIndex = 0;
+            this.dgvToDo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvToDo_CellContentClick);
             // 
             // txtPrize
             // 
