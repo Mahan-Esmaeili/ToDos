@@ -14,7 +14,7 @@ namespace ToDos
             InitializeComponent();
             ConfigureDataGridView();
             LoadPerson();
-            LoadData();
+            //LoadData();
         }
 
         private void ConfigureDataGridView()
@@ -88,21 +88,32 @@ namespace ToDos
             dgvToDo.CellFormatting += DgvPersons_CellFormatting;*/
         }
 
-        private void LoadData()
+        private void LoadData(int personId)
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                dgvToDo.DataSource = appDbContext.Tasks.ToList();
+                //var a = ddlPerson.SelectedValue;
+                //int selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+                dgvToDo.DataSource = appDbContext.Tasks.Where(p => p.Person.Id == personId).ToList();
             }
+        }
+        public class Test
+        {
+            public int Id { get; set; }
+            public string Value { get; set; }
         }
 
         private void LoadPerson()
         {
             using (AppDbContext appDbContext = new AppDbContext())
             {
-                ddlPerson.DataSource = appDbContext.People.Select(p => new { p.Id, p.Name }).ToList();
+                ddlPerson.DataSource = appDbContext.People.ToList();
                 ddlPerson.DisplayMember = "Name";
                 ddlPerson.ValueMember = "Id";
+                ddlEditPerson.DataSource = appDbContext.People.ToList();
+                ddlEditPerson.DisplayMember = "Name";
+                ddlEditPerson.ValueMember = "Id";
+
             }
         }
 
@@ -121,7 +132,7 @@ namespace ToDos
             else
             {
                 int prize = Convert.ToInt32(price);
-                int personId = Convert.ToInt32(ddlPerson.SelectedValue.ToString());
+                int personId = Convert.ToInt32(ddlEditPerson.SelectedValue.ToString());
                 ToDo toDo = new ToDo()
                 {
                     Title = title,
@@ -139,7 +150,17 @@ namespace ToDos
                     appDbContext.Tasks.Add(toDo);
                     appDbContext.SaveChanges();
                     lblError.Text = "با موفقیت انجام شد";
-                    LoadData();
+                    var selectedPersonId = 0;
+                    if (ddlPerson.SelectedValue.GetType() == typeof(int))
+                    {
+                        selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+                    }
+                    else
+                    {
+                        selectedPersonId = Convert.ToInt32((ddlPerson.SelectedValue as Person).Id);
+                    }
+                    LoadData(selectedPersonId);
+
                 }
 
             }
@@ -164,15 +185,54 @@ namespace ToDos
                         ToDo toDo = appDbContext.Tasks.FirstOrDefault(p => p.Id == taskId);
                         appDbContext.Tasks.Remove(toDo);
                         appDbContext.SaveChanges();
-                        LoadData();
+                        var selectedPersonId = 0;
+                        if (ddlPerson.SelectedValue.GetType() == typeof(int))
+                        {
+                            selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+                        }
+                        else
+                        {
+                            selectedPersonId = Convert.ToInt32((ddlPerson.SelectedValue as Person).Id);
+                        }
+                        LoadData(selectedPersonId);
                     }
                 }
 
-                else
+                else if (dgvToDo.Columns[e.ColumnIndex].Name == "Edit")
                 {
-
+                    int taskId = Convert.ToInt32(dgvToDo.Rows[e.RowIndex].Cells["Id"].Value.ToString());
+                    ToDo toDo = appDbContext.Tasks.Include("Person").FirstOrDefault(p => p.Id == taskId);
+                    txtTitle.Text = toDo.Title;
+                    txtPrize.Text = toDo.Payment.ToString();
+                    if (toDo.TaskStatus == TaskStatus.Completed)
+                    {
+                        rdbDone.Checked = true;
+                        rdbNotDone.Checked = false;
+                    }
+                    else if(toDo.TaskStatus == TaskStatus.NotCompleted)
+                    {
+                        rdbDone.Checked = false;
+                        rdbNotDone.Checked = true;
+                    }
+                    ddlEditPerson.SelectedItem = toDo.Person;
+                    ddlEditPerson.SelectedIndex = ddlEditPerson.Items.IndexOf(ddlEditPerson.Items.IndexOf(new {Id = toDo.Person.Id, Name = toDo.Person.Name }));
                 }
             }
+        }
+
+        private void ddlPerson_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedPersonId = 0;
+            if (ddlPerson.SelectedValue.GetType() == typeof(int))
+            {
+                selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+            }
+            else
+            {
+                selectedPersonId = Convert.ToInt32((ddlPerson.SelectedValue as Person).Id);
+            }
+            LoadData(selectedPersonId);
+
         }
     }
 }

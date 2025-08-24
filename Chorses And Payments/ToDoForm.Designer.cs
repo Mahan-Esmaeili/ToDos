@@ -42,29 +42,34 @@ namespace ToDos
             this.gpbStatus = new System.Windows.Forms.GroupBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
+            this.ddlEditPerson = new System.Windows.Forms.ComboBox();
+            this.lblFilterPerson = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvToDo)).BeginInit();
             this.gpbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvToDo
             // 
+            this.dgvToDo.BackgroundColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.dgvToDo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvToDo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvToDo.Location = new System.Drawing.Point(5, 3);
+            this.dgvToDo.GridColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvToDo.Location = new System.Drawing.Point(12, 39);
             this.dgvToDo.Name = "dgvToDo";
-            this.dgvToDo.Size = new System.Drawing.Size(1328, 343);
+            this.dgvToDo.Size = new System.Drawing.Size(1328, 307);
             this.dgvToDo.TabIndex = 0;
             this.dgvToDo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvToDo_CellContentClick);
             // 
             // txtPrize
             // 
-            this.txtPrize.Location = new System.Drawing.Point(236, 555);
+            this.txtPrize.Location = new System.Drawing.Point(231, 551);
             this.txtPrize.Name = "txtPrize";
             this.txtPrize.Size = new System.Drawing.Size(116, 20);
             this.txtPrize.TabIndex = 1;
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(236, 352);
+            this.txtTitle.Location = new System.Drawing.Point(231, 352);
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(116, 20);
             this.txtTitle.TabIndex = 4;
@@ -108,10 +113,11 @@ namespace ToDos
             // ddlPerson
             // 
             this.ddlPerson.FormattingEnabled = true;
-            this.ddlPerson.Location = new System.Drawing.Point(236, 414);
+            this.ddlPerson.Location = new System.Drawing.Point(619, 12);
             this.ddlPerson.Name = "ddlPerson";
             this.ddlPerson.Size = new System.Drawing.Size(116, 21);
             this.ddlPerson.TabIndex = 9;
+            this.ddlPerson.SelectedIndexChanged += new System.EventHandler(this.ddlPerson_SelectedIndexChanged);
             // 
             // rdbNotDone
             // 
@@ -139,7 +145,7 @@ namespace ToDos
             // 
             this.gpbStatus.Controls.Add(this.rdbDone);
             this.gpbStatus.Controls.Add(this.rdbNotDone);
-            this.gpbStatus.Location = new System.Drawing.Point(236, 441);
+            this.gpbStatus.Location = new System.Drawing.Point(231, 438);
             this.gpbStatus.Name = "gpbStatus";
             this.gpbStatus.Size = new System.Drawing.Size(116, 82);
             this.gpbStatus.TabIndex = 12;
@@ -147,7 +153,7 @@ namespace ToDos
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(426, 555);
+            this.btnSave.Location = new System.Drawing.Point(426, 548);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 13;
@@ -163,11 +169,30 @@ namespace ToDos
             this.lblError.Size = new System.Drawing.Size(0, 13);
             this.lblError.TabIndex = 14;
             // 
+            // ddlEditPerson
+            // 
+            this.ddlEditPerson.FormattingEnabled = true;
+            this.ddlEditPerson.Location = new System.Drawing.Point(231, 411);
+            this.ddlEditPerson.Name = "ddlEditPerson";
+            this.ddlEditPerson.Size = new System.Drawing.Size(116, 21);
+            this.ddlEditPerson.TabIndex = 15;
+            // 
+            // lblFilterPerson
+            // 
+            this.lblFilterPerson.AutoSize = true;
+            this.lblFilterPerson.Location = new System.Drawing.Point(576, 15);
+            this.lblFilterPerson.Name = "lblFilterPerson";
+            this.lblFilterPerson.Size = new System.Drawing.Size(37, 13);
+            this.lblFilterPerson.TabIndex = 16;
+            this.lblFilterPerson.Text = "شخص";
+            // 
             // ToDoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1566, 701);
+            this.Controls.Add(this.lblFilterPerson);
+            this.Controls.Add(this.ddlEditPerson);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.gpbStatus);
@@ -206,5 +231,7 @@ namespace ToDos
         private System.Windows.Forms.GroupBox gpbStatus;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.ComboBox ddlEditPerson;
+        private System.Windows.Forms.Label lblFilterPerson;
     }
 }

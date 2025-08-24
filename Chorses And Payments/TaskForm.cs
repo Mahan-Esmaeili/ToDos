@@ -83,7 +83,7 @@ namespace ToDos
             var people = db.People.ToList();
             cbxPersons.DataSource = people;
             cbxPersons.DisplayMember = "Name"; // The column to display
-            cbxPersons.ValueMember = "ID";   // The underlying value
+            cbxPersons.ValueMember = "Id";   // The underlying value
             //var selectedPersonId = Convert.ToInt32(cbxPersons.SelectedValue.Id);
             var selectedPerson = people.FirstOrDefault();
             LoadData(selectedPerson.Id);
