@@ -14,9 +14,8 @@ namespace ToDos
             InitializeComponent();
             ConfigureDataGridView();
             LoadPerson();
-            //LoadData();
         }
-
+        public int taskId = -1;
         private void ConfigureDataGridView()
         {
             // Configure appearance and behavior
@@ -51,7 +50,14 @@ namespace ToDos
             //    Width = 200
             //});
 
-
+            dgvToDo.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Payment",
+                HeaderText = "پاداش",
+                ReadOnly = true,
+                Width = 100,
+                Name = "Payment"
+            });
             //toDos: باید به چای استارتد یا نات استارتد از آیکون های تیک و ضربدر استفاده کنیم
             dgvToDo.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -133,35 +139,51 @@ namespace ToDos
             {
                 int prize = Convert.ToInt32(price);
                 int personId = Convert.ToInt32(ddlEditPerson.SelectedValue.ToString());
-                ToDo toDo = new ToDo()
-                {
-                    Title = title,
-                    TaskStatus = status ? TaskStatus.Completed : TaskStatus.NotCompleted,
-                    Payment = prize,
-                    ApplicationDate = DateTime.Now
-
-                };
-
                 using (AppDbContext appDbContext = new AppDbContext())
                 {
-                    Person person = appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
-                    toDo.Person = person;
-
-                    appDbContext.Tasks.Add(toDo);
-                    appDbContext.SaveChanges();
-                    lblError.Text = "با موفقیت انجام شد";
-                    var selectedPersonId = 0;
-                    if (ddlPerson.SelectedValue.GetType() == typeof(int))
+                    if (taskId != -1)
                     {
-                        selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+
+                        ToDo task = appDbContext.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
+                        task.Title = title;
+                        task.TaskStatus = status ? TaskStatus.Completed : TaskStatus.NotCompleted;
+                        task.Payment = prize;
+                        task.ApplicationDate = DateTime.Now;
+                        Person person = appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
+                        task.Person = person;
+                        appDbContext.SaveChanges();
+                        lblError.Text = "با موفقیت انجام شد";
+                        taskId = -1;
                     }
+
                     else
                     {
-                        selectedPersonId = Convert.ToInt32((ddlPerson.SelectedValue as Person).Id);
-                    }
-                    LoadData(selectedPersonId);
+                        ToDo toDo = new ToDo()
+                        {
+                            Title = title,
+                            TaskStatus = status ? TaskStatus.Completed : TaskStatus.NotCompleted,
+                            Payment = prize,
+                            ApplicationDate = DateTime.Now
 
+                        };
+                        Person person = appDbContext.People.Where(p => p.Id == personId).FirstOrDefault();
+                        toDo.Person = person;
+
+                        appDbContext.Tasks.Add(toDo);
+                        appDbContext.SaveChanges();
+                        lblError.Text = "با موفقیت انجام شد";
+                    }
                 }
+                var selectedPersonId = 0;
+                if (ddlPerson.SelectedValue.GetType() == typeof(int))
+                {
+                    selectedPersonId = Convert.ToInt32(ddlPerson.SelectedValue);
+                }
+                else
+                {
+                    selectedPersonId = Convert.ToInt32((ddlPerson.SelectedValue as Person).Id);
+                }
+                LoadData(selectedPersonId);
 
             }
         }
@@ -200,7 +222,7 @@ namespace ToDos
 
                 else if (dgvToDo.Columns[e.ColumnIndex].Name == "Edit")
                 {
-                    int taskId = Convert.ToInt32(dgvToDo.Rows[e.RowIndex].Cells["Id"].Value.ToString());
+                    taskId = Convert.ToInt32(dgvToDo.Rows[e.RowIndex].Cells["Id"].Value.ToString());
                     ToDo toDo = appDbContext.Tasks.Include("Person").FirstOrDefault(p => p.Id == taskId);
                     txtTitle.Text = toDo.Title;
                     txtPrize.Text = toDo.Payment.ToString();
@@ -209,13 +231,16 @@ namespace ToDos
                         rdbDone.Checked = true;
                         rdbNotDone.Checked = false;
                     }
-                    else if(toDo.TaskStatus == TaskStatus.NotCompleted)
+                    else if (toDo.TaskStatus == TaskStatus.NotCompleted)
                     {
                         rdbDone.Checked = false;
                         rdbNotDone.Checked = true;
                     }
                     ddlEditPerson.SelectedItem = toDo.Person;
-                    ddlEditPerson.SelectedIndex = ddlEditPerson.Items.IndexOf(ddlEditPerson.Items.IndexOf(new {Id = toDo.Person.Id, Name = toDo.Person.Name }));
+                    ddlEditPerson.SelectedValue = toDo.Person.Id;
+                    var selectedIndex = ddlEditPerson.Items.Cast<Person>().Where(p => p.Id == toDo.Person.Id).FirstOrDefault();
+                    ddlEditPerson.SelectedIndex = ddlEditPerson.Items.IndexOf(selectedIndex);
+
                 }
             }
         }
